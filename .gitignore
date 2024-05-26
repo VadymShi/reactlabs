@@ -1,0 +1,5 @@
+/djangoProject/__pycache__
+/.venv
+/.idea
+/myapp/__pycache__
+/react_app/node_modules

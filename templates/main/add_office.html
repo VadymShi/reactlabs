@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Office</title>
+    <link rel="stylesheet" href="../../static/main/css/main.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="../../index.html"><img src="../../react_app/w/src/components/logo.png" alt=""></a>
+        </div>
+    </header>
+    
+    <main>
+        <h1>Додати Офіс</h1>
+        <form id="addOfficeForm" class="form-2">
+            <div class="form-group">
+                <input class="form-input" name="name" placeholder=" " required>
+                <label class="form-label">Назва</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" name="location" placeholder=" " required>
+                <label class="form-label">Локація</label>
+            </div>
+            <button type="button" id="addOfficeButton" class="head-button">Відправити</button>
+        </form>
+        <div id="message"></div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Workers. Усі права захищено.</p>
+    </footer>
+
+    <script>
+        document.getElementById('addOfficeButton').addEventListener('click', function() {
+            var form = document.getElementById('addOfficeForm');
+            var formData = new FormData(form);
+
+            fetch('http://127.0.0.1:8000/add-office/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var messageDiv = document.getElementById('message');
+                if (data.id) {
+                    messageDiv.innerHTML = 'Офіс додано успішно!';
+                } else {
+                    messageDiv.innerHTML = 'Помилка при додаванні офісу!';
+                }
+            })
+            .catch(error => {
+                var messageDiv = document.getElementById('message');
+                messageDiv.innerHTML = 'Помилка при додаванні офісу!';
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

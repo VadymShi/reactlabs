@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+    <link rel="stylesheet" href="../../static/registration/css/registration.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../../react_app/w/src/components/logo.png" alt="">
+        </div>
+    </header>
+    
+    <main>
+        <h1>Увійти в акаунт</h1>
+        <form id="loginForm" class="form-2">
+            <div class="form-group">
+                <input class="form-input" name="email" placeholder=" " required>
+                <label class="form-label">Пошта</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" name="password" placeholder=" " type="password" required>
+                <label class="form-label">Пароль</label>
+            </div>
+            <ul>
+                <li><button type="button" id="loginButton" class="head-button">Увійти</button></li>
+            </ul>
+        </form>
+        <div id="message"></div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Workers. Усі права захищено.</p>
+    </footer>
+
+    <script>
+        document.getElementById('loginButton').addEventListener('click', function() {
+            var form = document.getElementById('loginForm');
+            var formData = new FormData(form);
+
+            fetch('/login/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var messageDiv = document.getElementById('message');
+                if (data.message === 'Logged in successfully') {
+                    window.location.href = '../../index.html';
+                } else {
+                    messageDiv.innerHTML = 'Помилка при вході!';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

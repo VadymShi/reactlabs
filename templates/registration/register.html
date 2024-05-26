@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="../../static/registration/css/registration.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../../react_app/w/src/components/logo.png" alt="">
+        </div>
+    </header>
+    
+    <main>
+        <h1>Реєстрація</h1>
+        <form id="registrationForm" class="form-2">
+            <div class="form-group">
+                <input class="form-input" name="first_name" placeholder=" " required>
+                <label class="form-label">Ім'я</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" name="last_name" placeholder=" " required>
+                <label class="form-label">Прізвище</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" name="birth_year" placeholder=" " required>
+                <label class="form-label">Рік народження</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" name="email" placeholder=" " type="email" required>
+                <label class="form-label">Пошта</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" name="password" placeholder=" " type="password" required>
+                <label class="form-label">Пароль</label>
+            </div>
+            <ul>
+                <li><button type="button" id="registerButton" class="head-button">Зареєстуватися</button></li>
+            </ul>
+        </form>
+        <div id="message"></div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Workers. Усі права захищено.</p>
+    </footer>
+
+    <script>
+        document.getElementById('registerButton').addEventListener('click', function() {
+            var form = document.getElementById('registrationForm');
+            var formData = new FormData(form);
+
+            fetch('/register/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var messageDiv = document.getElementById('message');
+                if (data.id) {
+                    messageDiv.innerHTML = 'Реєстрація успішна!';
+                } else {
+                    messageDiv.innerHTML = 'Помилка реєстрації!';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

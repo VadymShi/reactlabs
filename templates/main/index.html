@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <link rel="stylesheet" href="static/main/css/main.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html"><img src="static/main/img/logo.png" alt=""></a>
+        </div>
+        <div class="s-head">
+            <ul>
+            <li><button onclick="window.location.href='index.html'" class="head-button">Головна сторінка</li>
+            <li><button onclick="window.location.href='templates/main/add_worker.html'" class="head-button">Додати працівника</li>
+            <li><button onclick="window.location.href='templates/main/add_office.html'" class="head-button">Додати офіс</li>
+            <li><button onclick="window.location.href='templates/main/del_office.html'" class="head-button">Видалити офіс</li>
+            <li><button onclick="window.location.href='worker_ist.html'" class="head-button">Список робітників</li>
+            </ul>
+        </div>
+    </header>
+    
+    <main>
+        <h1>Ваша сторінка</h1>
+        <div class="user-info">
+            <img src="static/main/img/photo_2024-03-28_00-29-34.jpg" alt="">
+            <p> Ім'я : ім'я користувача</p>
+            <p> Iм'я на сайті : ім'я користувача</p>
+            <p>Дата народження: дата народження: користувача</p>
+            <p> Email: email користувача</p>
+            <ul>
+                <li><button onclick="window.location.href='templates/registration/password_change_form.html'" class="user-info-button">Змінити пароль</li>
+                <li><button onclick="window.location.href='templates/registration/logout.html'" class="user-info-button">Вийти з акаунту</li>
+            </ul>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Workers. Усі права захищено.</p>
+    </footer>
+</body>
+</html>

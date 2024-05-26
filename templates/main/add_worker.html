@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Додати працівника</title>
+    <link rel="stylesheet" href="../../static/main/css/main.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="../../index.html"><img src="../../react_app/w/src/components/logo.png" alt=""></a>
+        </div>
+    </header>
+
+    <main>
+        <h1>Додати працівника</h1>
+        <form id="addWorkerForm" class="form-2">
+            <div class="form-group">
+                <input class="form-input" type="text" name="first_name" placeholder=" " required>
+                <label class="form-label">Ім'я</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" type="text" name="last_name" placeholder=" " required>
+                <label class="form-label">Прізвище</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" type="date" name="birth_date" placeholder=" " required>
+                <label class="form-label">Дата народження</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" type="date" name="hire_date" placeholder=" " required>
+                <label class="form-label">Дата найму</label>
+            </div>
+            <div class="form-group">
+                <input class="form-input" type="text" name="profession" placeholder=" " required>
+                <label class="form-label">Професія</label>
+            </div>
+            <div class="form-group">
+                <label for="offices">Офіси</label>
+                <div id="worker-offices">
+                    <!-- Checkbox options will be populated by JavaScript -->
+                </div>
+            </div>
+            <button type="button" id="addWorkerButton" class="head-button">Додати працівника</button>
+        </form>
+        <div id="message"></div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Workers. Усі права захищено.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("http://127.0.0.1:8000/api/offices/")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const officesDiv = document.getElementById("worker-offices");
+                    if (data.length === 0) {
+                        const noOfficesMessage = document.createElement("p");
+                        noOfficesMessage.textContent = "Немає доступних офісів. Будь ласка, додайте офіси спочатку.";
+                        officesDiv.appendChild(noOfficesMessage);
+                    } else {
+                        data.forEach((office) => {
+                            const checkbox = document.createElement("input");
+                            checkbox.type = "checkbox";
+                            checkbox.id = `office-${office.id}`;
+                            checkbox.name = "offices";
+                            checkbox.value = office.id;
+
+                            const label = document.createElement("label");
+                            label.htmlFor = `office-${office.id}`;
+                            label.textContent = office.name;
+
+                            const div = document.createElement("div");
+                            div.appendChild(checkbox);
+                            div.appendChild(label);
+
+                            officesDiv.appendChild(div);
+                        });
+                    }
+                })
+                .catch(error => console.error("Error fetching offices:", error));
+        });
+
+        document.getElementById("addWorkerButton").addEventListener("click", function() {
+            var form = document.getElementById('addWorkerForm');
+            var formData = new FormData(form);
+
+            fetch('http://127.0.0.1:8000/add-worker/', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData)),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                var messageDiv = document.getElementById('message');
+                if (data.status === 'success') {
+                    messageDiv.innerHTML = 'Працівника додано успішно!';
+                } else {
+                    messageDiv.innerHTML = `Помилка при додаванні працівника: ${data.message}`;
+                }
+            })
+            .catch(error => {
+                var messageDiv = document.getElementById('message');
+                messageDiv.innerHTML = 'Помилка при додаванні працівника!';
+                console.error('Error:', error);
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
